@@ -6,16 +6,32 @@
 //
 
 import SwiftUI
+import SwiftData
+
+@Observable
+class Light {
+    var isOn: Bool = false
+}
+
+struct RoomView: View {
+    @Bindable var light: Light
+    
+    var body: some View {
+        Toggle(isOn: $light.isOn, label: {
+            EmptyView()
+        }).fixedSize()
+    }
+}
 
 struct ContentView: View {
+    @State private var light = Light()
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            RoomView(light: light)
         }
-        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(light.isOn ? .yellow : .white)
     }
 }
 
