@@ -12,6 +12,7 @@ struct SwiftUIChangesApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(Light())
         }
     }
 }

@@ -13,7 +13,7 @@ class Light {
     var isOn: Bool = false
 }
 
-struct RoomView: View {
+struct LightView: View {
     @Bindable var light: Light
     
     var body: some View {
@@ -23,12 +23,30 @@ struct RoomView: View {
     }
 }
 
+struct RoomView: View {
+    @Environment(Light.self) private var light
+    
+    var body: some View {
+        LightView(light: light)
+    }
+}
+
+struct CabinView: View {
+    @Environment(Light.self) private var light
+    
+    var body: some View {
+        Image(systemName: light.isOn ? "lightbulb.fill" : "lightbulb")
+            .font(.largeTitle)
+    }
+}
+
 struct ContentView: View {
-    @State private var light = Light()
+    @Environment(Light.self) private var light
     
     var body: some View {
         VStack {
-            RoomView(light: light)
+            RoomView()
+            CabinView()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(light.isOn ? .yellow : .white)
@@ -37,4 +55,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .environment(Light())
 }
